@@ -1,6 +1,7 @@
 package com.dailycodebuffer.springboot.tutorial.service;
 
 import com.dailycodebuffer.springboot.tutorial.entity.Department;
+import com.dailycodebuffer.springboot.tutorial.exception.DepartmentNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +9,7 @@ import java.util.Optional;
 public interface DepartmentService {
     Department saveDepartment(Department department);
 
-    Optional<Department> getDepartment(Long id);
+    Department getDepartment(Long id) throws DepartmentNotFoundException;
 
     public List<Department> getAllDepartments();
 

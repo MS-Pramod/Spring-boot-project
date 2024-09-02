@@ -1,7 +1,10 @@
 package com.dailycodebuffer.springboot.tutorial.service;
 
 import com.dailycodebuffer.springboot.tutorial.entity.Department;
+import com.dailycodebuffer.springboot.tutorial.exception.DepartmentNotFoundException;
 import com.dailycodebuffer.springboot.tutorial.repository.DepartmentRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,14 +16,24 @@ public class DepartmentServiceImpl implements   DepartmentService{
 
     @Autowired
     private DepartmentRepository departmentRepository;
+    private Logger logger = LoggerFactory.getLogger(DepartmentServiceImpl.class);
     @Override
     public Department saveDepartment(Department department) {
+        logger.info("saveDepartment  service ");
         return departmentRepository.save(department);
     }
 
     @Override
-    public Optional<Department> getDepartment(Long id) {
-        return departmentRepository.findById(id);
+    public Department getDepartment(Long id) throws DepartmentNotFoundException {
+
+        Optional<Department> department= departmentRepository.findById(id);
+        if(!department.isPresent()){
+            System.out.println(
+                    "inside of getDepartment "
+            );
+            throw new DepartmentNotFoundException("Department IS is not found");
+        }
+       return department.get();
     }
 
     @Override

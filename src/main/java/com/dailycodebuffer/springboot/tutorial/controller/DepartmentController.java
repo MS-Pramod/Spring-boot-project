@@ -1,8 +1,11 @@
 package com.dailycodebuffer.springboot.tutorial.controller;
 
 import com.dailycodebuffer.springboot.tutorial.entity.Department;
+import com.dailycodebuffer.springboot.tutorial.exception.DepartmentNotFoundException;
 import com.dailycodebuffer.springboot.tutorial.service.DepartmentService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,13 +18,15 @@ public class DepartmentController {
     @Autowired
     private DepartmentService departmentService;
 
+    private Logger logger= LoggerFactory.getLogger(DepartmentController.class);
     @PostMapping("/departments")
     public Department saveDepartment(@Valid  @RequestBody Department department){
+        logger.info("saveDepartment controller"+department);
         return departmentService.saveDepartment(department);
     }
 
     @GetMapping("/getDepartment/{id}")
-    public Optional<Department> getDepartment(@PathVariable Long id){
+    public Department getDepartment(@PathVariable Long id) throws DepartmentNotFoundException {
         return departmentService.getDepartment(id);
     }
 
